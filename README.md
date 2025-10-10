@@ -7,11 +7,11 @@ A fully functional infix expression parser and evaluator written in **standard C
 - Functions: `SQRT` (more coming!)
 - Floating-point results
 
-## Example (SOLVE AMORT MONTHLY PMT: INT=5% LOAN=$250000 N=30 YRS)
+## Example 
+(SOLVE AMORT MONTHLY PMT: INT=5% LOAN=$250000 N=30 YRS)
 ENTER EXPRESSION (OR END)
 (5/1200*250000*((1+5/1200)^(30*12)))/(((1+5/1200)^(30*12))-1)
 ANS=      1342.05405
-
 
 ## Build Instructions
 Requires **GnuCOBOL 3.1+**:
@@ -20,4 +20,5 @@ cobc -x cobcalc.cob
 
 ## License 
 GNU General Public License v3.0 or later — see LICENSE  
+
 
