@@ -1,9 +1,8 @@
 # COBCALC — Algebraic Expression Evaluator in COBOL
 
-    Inspiration
-    This project was originally inspired by an algebraic expression evaluator I saw in BYTE Magazine in the 1980s—likely written in BASIC or Pascal. I understood the logic and rewrote it in COBOL back in the late 1990s. Life took over (we were raising a family), and the code was set aside. Now, decades later, I’ve resurrected, refined, and open-sourced it as cobcalc—possibly the only general-purpose infix math evaluator ever written in pure COBOL. 
-     
- A fully functional infix expression parser and evaluator written in **standard COBOL**, supporting:
+This project was originally inspired by an algebraic expression evaluator I saw in BYTE Magazine in the 1980s—likely written in BASIC or Pascal. I understood the logic and rewrote it in COBOL back in the late 1990s. Life took over (we were raising a family), and the code was set aside. Now, decades later, I’ve resurrected, refined, and open-sourced it as cobcalc—possibly the only general-purpose infix math evaluator ever written in pure COBOL. 
+
+A fully functional infix expression parser and evaluator written in **standard COBOL**, supporting:
 - Basic arithmetic (`+ - * /`)
 - Exponentiation (`^`)
 - Parentheses nesting
@@ -12,9 +11,10 @@
 
 ## Example 
 (SOLVE AMORT MONTHLY PMT: INT=5% LOAN=$250000 N=30 YRS)
-\nENTER EXPRESSION (OR END)
-(5/1200\*250000*((1+5/1200)^(30\*12)))/(((1+5/1200)^(30\*12))-1)
-\nANS=      1342.05405
+ENTER EXPRESSION (OR END)
+(5/1200*250000*((1+5/1200)^(30*12)))/(((1+5/1200)^(30*12))-1)
+ANS=      1342.05405
+
 
 ## Build Instructions
 Requires **GnuCOBOL 3.1+**:
@@ -23,7 +23,4 @@ cobc -x cobcalc.cob
 
 ## License 
 GNU General Public License v3.0 or later — see LICENSE  
-
-
-
 
