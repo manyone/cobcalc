@@ -21,11 +21,15 @@ ANS=      1342.05405
 
 ## Build Instructions
 Requires **GnuCOBOL 3.1+**:
+Requires COBOL-85 for recursion and structured programming (not compatible with COBOL-74 without significant changes)
+
 ```sh
 cobc -x cobcalc.cob
+```
 
 ## License 
 GNU General Public License v3.0 or later — see LICENSE  
+
 
 
 
