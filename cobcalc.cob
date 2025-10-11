@@ -87,6 +87,7 @@
            03 FILLER PIC X(01).
              88 GN-GOOD-NUMBER VALUE 'Y'.
              88 GN-BAD-NUMBER VALUE 'N'.
+
        PROCEDURE DIVISION.
        0100-SOLVE.
            DISPLAY 'ENTER EXPRESSION (OR END)'
@@ -172,46 +173,35 @@
                  WHEN OTHER
                    PERFORM 1560-PUSH-OP
                END-EVALUATE
+
              WHEN ('TERM1')
                MOVE 'TERM2' TO EXP-MODE
                PERFORM 1490-PUSH-MODE
-               MOVE 'FACT1' TO EXP-MODE
+               MOVE 'POWER1' TO EXP-MODE       *> [CHANGED] used to be FACT1
+
              WHEN ('TERM2')
                PERFORM 1350-GET-TOKEN
                EVALUATE EXP-TOKEN
-                 WHEN ('^')
-                   MOVE EXP-TOKEN TO EXP-OP
-                   PERFORM 1560-PUSH-OP
-                   MOVE 'TERM3' TO EXP-MODE
-                   PERFORM 1490-PUSH-MODE
-                   MOVE 'FACT1' TO EXP-MODE
                  WHEN ('*')
                    MOVE EXP-TOKEN TO EXP-OP
                    PERFORM 1560-PUSH-OP
                    MOVE 'TERM3' TO EXP-MODE
                    PERFORM 1490-PUSH-MODE
-                   MOVE 'FACT1' TO EXP-MODE
+                   MOVE 'POWER1' TO EXP-MODE
                  WHEN ('/')
                    MOVE EXP-TOKEN TO EXP-OP
                    PERFORM 1560-PUSH-OP
                    MOVE 'TERM3' TO EXP-MODE
                    PERFORM 1490-PUSH-MODE
-                   MOVE 'FACT1' TO EXP-MODE
+                   MOVE 'POWER1' TO EXP-MODE
                  WHEN OTHER
                    PERFORM 1420-UNGET-TOKEN
                    PERFORM 1700-POP-MODE
                END-EVALUATE
+
              WHEN ('TERM3')
                PERFORM 1770-POP-OP
                EVALUATE (EXP-OP)
-                 WHEN ('^')
-                   PERFORM 1840-POP-RS
-                   MOVE EXP-RS TO EXP-WORK-RS-A
-                   PERFORM 1840-POP-RS
-                   MOVE EXP-RS TO EXP-WORK-RS-B
-                   COMPUTE EXP-RS = EXP-WORK-RS-B ** EXP-WORK-RS-A
-                   PERFORM 1630-PUSH-RS
-                   MOVE 'TERM2' TO EXP-MODE
                  WHEN ('*')
                    PERFORM 1840-POP-RS
                    MOVE EXP-RS TO EXP-WORK-RS-A
@@ -231,6 +221,40 @@
                  WHEN OTHER
                    PERFORM 1560-PUSH-OP
                END-EVALUATE
+
+      *> ==============================================================
+      *> [NEW]  Power-handling level inserted between TERM and FACT.
+      *>         Provides tighter precedence and right-associative ^
+      *> ==============================================================
+             WHEN ('POWER1')
+               MOVE 'POWER2' TO EXP-MODE
+               PERFORM 1490-PUSH-MODE
+               MOVE 'FACT1' TO EXP-MODE
+
+             WHEN ('POWER2')
+               PERFORM 1350-GET-TOKEN
+               IF (EXP-TOKEN = '^')
+                 MOVE EXP-TOKEN TO EXP-OP
+                 PERFORM 1560-PUSH-OP
+                 MOVE 'POWER3' TO EXP-MODE
+                 PERFORM 1490-PUSH-MODE
+                 MOVE 'POWER1' TO EXP-MODE
+               ELSE
+                 PERFORM 1420-UNGET-TOKEN
+                 PERFORM 1700-POP-MODE
+               END-IF
+
+             WHEN ('POWER3')
+               PERFORM 1770-POP-OP
+               PERFORM 1840-POP-RS
+               MOVE EXP-RS TO EXP-WORK-RS-A
+               PERFORM 1840-POP-RS
+               MOVE EXP-RS TO EXP-WORK-RS-B
+               COMPUTE EXP-RS = EXP-WORK-RS-B ** EXP-WORK-RS-A
+               PERFORM 1630-PUSH-RS
+               MOVE 'POWER2' TO EXP-MODE
+       *> ===============================================================
+
              WHEN ('FACT1')
                SET EXP-CHECK-UNARY TO TRUE
                PERFORM 1350-GET-TOKEN
@@ -259,6 +283,7 @@
                    DISPLAY 'NUMBER OR SQRT EXPECTED, FOUND ' EXP-TOKEN
                    MOVE +1 TO EXP-RC
                END-EVALUATE
+
              WHEN ('FACT2')
                PERFORM 1350-GET-TOKEN
                IF (NOT (EXP-TOKEN = ')'))
@@ -266,6 +291,7 @@
                  MOVE +1 TO EXP-RC
                END-IF
                PERFORM 1700-POP-MODE
+
              WHEN ('FACT3')
                PERFORM 1350-GET-TOKEN
                IF (NOT (EXP-TOKEN = ')'))
