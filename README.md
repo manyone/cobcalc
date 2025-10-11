@@ -18,7 +18,14 @@ ENTER EXPRESSION (OR END)
 
 ANS=      1342.05405
 
-
+## Grammar
+Here’s the approximate grammar that COBCALC implements:
+```expr → term { ("+" | "-") term } 
+  term → factor { ("*" | "/") factor } 
+  factor → primary { "^" primary } 
+  primary → number | "SQRT" "(" expr ")" | "(" expr ")"
+```
+             
 ## Build Instructions
 Requires **GnuCOBOL 3.1+**:
 Requires COBOL-85 for recursion and structured programming (not compatible with COBOL-74 without significant changes)
@@ -29,6 +36,7 @@ cobc -x cobcalc.cob
 
 ## License 
 GNU General Public License v3.0 or later — see LICENSE  
+
 
 
 
