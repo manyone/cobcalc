@@ -2,7 +2,7 @@
 
 This project was originally inspired by an algebraic expression evaluator I saw in BYTE Magazine in the 1980s—likely written in BASIC or Pascal. I understood the logic and rewrote it in COBOL back in the late 1990s. Life took over (we were raising a family), and the code was set aside. Now, decades later, I’ve resurrected, refined, and open-sourced it as **cobcalc** —possibly the only general-purpose infix math evaluator ever written in pure COBOL. 
 
-(I wrote another program, cobcal74.cob  that compiles with cobol-74 and runs in the tk4- environment may be found in https://github.com/manyone/cobcal74)
+(I wrote another program, cobcal74.cob  that compiles with cobol-74 and runs in the tk4- environment: see https://github.com/manyone/cobcal74)
 
 A fully functional infix expression parser and evaluator written in **standard COBOL**, supporting:
 - Basic arithmetic (`+ - * /`)
@@ -37,6 +37,7 @@ cobc -x cobcalc.cob
 
 ## License 
 GNU General Public License v3.0 or later — see LICENSE  
+
 
 
 
